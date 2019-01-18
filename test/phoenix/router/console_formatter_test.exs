@@ -57,7 +57,40 @@ defmodule Phoenix.Router.ConsoleFormatterTest do
     """
   end
 
-  defp draw(router) do
-    ConsoleFormatter.format(router)
+  describe "endpoint sockets" do
+
+    def __sockets__, do: []
+
+    defmodule FormatterEndpoint do
+      use Phoenix.Endpoint, otp_app: :phoenix
+
+      socket "/socket", TestSocket, websocket: true
+    end
+
+    test "format endpoint sockets" do
+      assert draw(RouterTestSingleRoutes, FormatterEndpoint) == """
+              page_path  GET     /        Phoenix.PageController :index
+      upload_image_path  POST    /images  Phoenix.ImageController :upload
+      remove_image_path  DELETE  /images  Phoenix.ImageController :delete
+
+      Phoenix.Router.ConsoleFormatterTest.FormatterEndpoint sockets:
+
+              websocket          /socket  TestSocket
+               longpoll          /socket  TestSocket
+      """
+    end
+
+
+    test "format endpoint without sockets" do
+      assert draw(RouterTestSingleRoutes, __MODULE__) == """
+              page_path  GET     /        Phoenix.PageController :index
+      upload_image_path  POST    /images  Phoenix.ImageController :upload
+      remove_image_path  DELETE  /images  Phoenix.ImageController :delete
+      """
+    end
+  end
+
+  defp draw(router, endpoint \\ nil) do
+    ConsoleFormatter.format(router, endpoint)
   end
 end
