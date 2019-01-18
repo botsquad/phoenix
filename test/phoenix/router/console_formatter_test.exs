@@ -67,7 +67,7 @@ defmodule Phoenix.Router.ConsoleFormatterTest do
       socket "/socket", TestSocket, websocket: true
     end
 
-    test "format endpoint sockets" do
+    test "format with sockets" do
       assert draw(RouterTestSingleRoutes, FormatterEndpoint) == """
               page_path  GET     /        Phoenix.PageController :index
       upload_image_path  POST    /images  Phoenix.ImageController :upload
@@ -81,7 +81,7 @@ defmodule Phoenix.Router.ConsoleFormatterTest do
     end
 
 
-    test "format endpoint without sockets" do
+    test "format without sockets" do
       assert draw(RouterTestSingleRoutes, __MODULE__) == """
               page_path  GET     /        Phoenix.PageController :index
       upload_image_path  POST    /images  Phoenix.ImageController :upload
